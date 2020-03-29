@@ -6,6 +6,7 @@
        'badge-success': appareilStatus === 'Allumé' }">
       {{ getStatus() }}</span>
   </h4>
+  <a [routerLink]="[id]">Détails</a>
   <button class="btn btn-sm btn-primary" (click)="onSwitchOn()" [disabled]="appareilStatus === 'Allumé'">Allumer</button>
   <button class="btn btn-sm btn-danger" (click)="onSwitchOff()" [disabled]="appareilStatus === 'Éteint'">Éteindre</button>
 </li>
