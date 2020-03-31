@@ -1,4 +1,8 @@
 import {Subject} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+
+@Injectable()
 
 export class AppareilService {
 
@@ -21,6 +25,9 @@ export class AppareilService {
       status: 'Éteint'
     }
   ];
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   emitAppareilSubject() {
     this.appareilSubject.next(this.appareils.slice())
@@ -63,5 +70,26 @@ export class AppareilService {
 
     this.appareils.push(appareilObject);
     this.emitAppareilSubject();
+  }
+
+  saveAppareilToServer() {
+    this.httpClient.put('https://angulartutoriel.firebaseio.com/appareils.json',this.appareils)
+      .subscribe(
+        () => {console.log('Enregistrement')},
+        (error) => {console.log('Erreur' + error)}
+      );
+  }
+
+  getAppareilsFromServer() {
+    this.httpClient.get<any[]>('https://angulartutoriel.firebaseio.com/appareils.json')
+      .subscribe(
+        (response) => {
+          this.appareils  = response;
+          this.emitAppareilSubject();
+        },
+        (error) => {
+          console.log('Erreur de chargement !' + error);
+        }
+      );
   }
 }
